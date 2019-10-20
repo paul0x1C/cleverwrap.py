@@ -21,7 +21,7 @@ from cleverwrap.conversation import Conversation
 class CleverWrap:
     """ A simple wrapper class for the www.cleverbot.com api. """
 
-    def __init__(self, api_key, name="CleverBot", url="https://www.cleverbot.com/getreply"):
+    def __init__(self, api_key, name="CleverBot", url="https://www.cleverbot.com/getreply", proxies={}):
         """ Initialize the class with an api key and optional name 
         :type api_key: str
         :type name: str
@@ -29,6 +29,7 @@ class CleverWrap:
         self.key = api_key
         self.name = name
         self.url = url
+        self.proxies = proxies
         self._default_conversation = None
 
     def new_conversation(self):
@@ -63,7 +64,7 @@ class CleverWrap:
 
         # Get a response
         try:
-            r = requests.get(self.url, params=params)
+            r = requests.get(self.url, params=params, proxies=self.proxies)
             r.raise_for_status()
         except requests.exceptions.RequestException as e:
             # catch errors, print then exit.
